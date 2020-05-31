@@ -13,7 +13,7 @@ public class Usuario {
 	protected static ArrayList<Integer> ids = new ArrayList<Integer>();
 			
 	//Construtor
-	Usuario(String nome){
+	public Usuario(String nome){
 		setNome(nome);
 		
 		if(ids.isEmpty()) {
