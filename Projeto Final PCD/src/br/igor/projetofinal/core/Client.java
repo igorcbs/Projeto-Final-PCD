@@ -7,6 +7,8 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import javax.swing.JOptionPane;
+
 public class Client extends Thread{
 
 	public static void main(String[] args) throws UnknownHostException, IOException {
@@ -27,8 +29,23 @@ public class Client extends Thread{
 		PrintWriter out = new PrintWriter(soc.getOutputStream(),true);
 		
 		//Logica de front-end do projeto
-		
-		
+		String name = "";
+
+		try {
+			do {
+				name = JOptionPane.showInputDialog("Insira o nome do usuário:");
+				if(name.isEmpty()) {
+					JOptionPane.showInternalMessageDialog(null, "Nome não pode ser vazio!");
+				}
+			} while (name.isEmpty());
+			
+			out.println(name + ":" + "");
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		
 		
 		//Finalizando socket, bufferes e printWriter

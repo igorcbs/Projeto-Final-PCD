@@ -7,12 +7,14 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import br.igor.projetofinal.models.Usuario;
+
 public class Server {
 
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
 		
-		System.out.println("Aguardando conexào com o cliente...");
+		System.out.println("Aguardando conexão com o cliente...");
 		
 		//Criando nova conexão entre cliente e servidor, sem estabelecer comunicação
 		ServerSocket ss = new ServerSocket(9010);
@@ -33,11 +35,21 @@ public class Server {
 		
 		//Logica de atribuição do projeto
 		
+		Usuario user;
+		String name = "";
+		int number = 0;
 		
-		
-		
-		
-		
+		while(true) {
+			
+			String str[] = in.readLine().split(":");
+			
+			name = str[0];
+//			number =  Integer.parseInt(str[1]);
+			
+			user = new Usuario(name);
+			
+			break;
+		}
 		
 		//Finalizando comunicação com o Cliente fechando Server, Socket, Buffer e Print
 		ss.close();
