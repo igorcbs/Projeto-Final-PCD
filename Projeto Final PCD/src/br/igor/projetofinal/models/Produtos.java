@@ -2,7 +2,8 @@ package br.igor.projetofinal.models;
 
 import java.util.UUID;
 
-public class Produtos {
+
+public class Produtos extends Thread{
 	
 	//Atributos
 	protected String nome;
@@ -14,7 +15,6 @@ public class Produtos {
 	public Produtos(String nome, int qtd) {
 		setNome(nome);
 		setQtdEstoque(qtd);
-		setIdProduto(UUID.randomUUID().toString().replace("-", ""));
 	}
 
 	//Metodos
@@ -48,5 +48,17 @@ public class Produtos {
 		this.idProduto = idProduto;
 	}
 	
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		super.run();
+		
+		try {
+			setIdProduto(UUID.randomUUID().toString().replace("-", ""));
+			Thread.sleep(3000);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
 }
 

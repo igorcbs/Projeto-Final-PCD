@@ -3,7 +3,9 @@ package br.igor.projetofinal.models;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Usuario {
+import javax.swing.JOptionPane;
+
+public class Usuario extends Thread{
 	
 	//Atributos
 	protected String nome;
@@ -15,21 +17,6 @@ public class Usuario {
 	//Construtor
 	public Usuario(String nome){
 		setNome(nome);
-		
-		if(ids.isEmpty()) {
-			id = number.nextInt(1000);
-			ids.add(id);
-			
-		}else {
-			id = number.nextInt(1000);
-			for (Integer integer : ids) {
-				if(integer == id) {
-					id = number.nextInt(1000);
-				}
-			}
-			ids.add(id);
-		}
-		setId(id);
 	}
 	
 	
@@ -42,7 +29,7 @@ public class Usuario {
 		this.nome = nome;
 	}
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
@@ -54,9 +41,35 @@ public class Usuario {
 		return produtos;
 	}
 
-	public void setProdutos(ArrayList<Produtos> produtos) {
-		this.produtos = produtos;
+	public void setProdutos(Produtos produto) {
+		this.produtos.add(produto);
 	}
 	
-	
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		super.run();
+		
+		try {
+			if(ids.isEmpty()) {
+				id = number.nextInt(1000);
+				ids.add(id);
+				
+			}else {
+				id = number.nextInt(1000);
+				for (Integer integer : ids) {
+					if(integer == id) {
+						id = number.nextInt(1000);
+					}
+				}
+				ids.add(id);
+			}
+			setId(id);
+			JOptionPane.showInternalMessageDialog(null, "Usuário Adicionado!");
+			Thread.sleep(6000);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+
+	}
 }
