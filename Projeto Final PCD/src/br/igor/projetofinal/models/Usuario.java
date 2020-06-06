@@ -45,6 +45,18 @@ public class Usuario extends Thread{
 		this.produtos.add(produto);
 	}
 	
+	//Essa função irá deletar um produto que foi escolhido pelo usuario
+	public String deleteProdut(int escolhido) {
+		
+		try {
+			this.produtos.remove(escolhido);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return "Item removido com sucesso!";
+	}
+	
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
@@ -66,7 +78,7 @@ public class Usuario extends Thread{
 			}
 			setId(id);
 			JOptionPane.showInternalMessageDialog(null, "Usuário Adicionado!");
-			Thread.sleep(6000);
+			Thread.sleep(3000);
 		} catch (Exception e) {
 			// TODO: handle exception
 		}

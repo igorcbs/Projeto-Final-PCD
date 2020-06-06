@@ -48,6 +48,12 @@ public class Produtos extends Thread{
 		this.idProduto = idProduto;
 	}
 	
+
+	@Override
+	public String toString() {
+		return "Nome:" + this.getNome() + " Quantidade no Estoque:" + this.getQtdEstoque() + " IdProduto:" + this.getIdProduto();
+	}
+
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub

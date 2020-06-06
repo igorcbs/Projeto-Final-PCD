@@ -6,14 +6,19 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 import br.igor.projetofinal.models.Produtos;
 import br.igor.projetofinal.models.Usuario;
 
 public class Server {
-
+	
+	//Atibutos do Servidor para envio ao Client, como referencia
+	public static ArrayList<String> userNames = new ArrayList<String>();
+	public static ArrayList<PrintWriter> printWriter = new ArrayList<PrintWriter>();
+	
+	
 	public static void main(String[] args) throws IOException {
-		// TODO Auto-generated method stub
 		
 		System.out.println("Aguardando conexão com o cliente...");
 		
@@ -25,6 +30,9 @@ public class Server {
 		
 		System.out.println("Estabelecendo conexão com cliente: " + soc);
 		
+		//Ler o Buffer do console!!!
+		BufferedReader userIn = new BufferedReader(new InputStreamReader(System.in));
+		
 		//Receptor de informações, guardamos ela em um buffer, os dados que viram do Socket!
 		BufferedReader in = new BufferedReader(new InputStreamReader(soc.getInputStream()));
 		
@@ -34,14 +42,18 @@ public class Server {
 		//Sem ele, precisamos chamar o metodo flush() sempre que quisermos estabelecer esse envio de dados
 		PrintWriter out = new PrintWriter(soc.getOutputStream(),true);
 		
-		//Logica de atribuição do projeto
+		/**
+		 * Lógica de Atribuição de variáveis e parte de configuração do projeto
+		 */
 		
 		Usuario user;
 		Produtos produto;
 		String name = "";
 		int number = 0;
 		int option = 0;
+		String result = "";
 		
+		//Cadastrando Usuário e iniciando a Thread
 		String str[] = in.readLine().split(":");
 		
 		name = str[0];
@@ -62,31 +74,74 @@ public class Server {
 			
 			switch (option) {
 			case 1:
+				//Cadastrando Produto adicionado pelo usuário e iniciando a Thread 
 				produto = new Produtos(name,number);
 				produto.start();
 				
+				//adicionando o produto na classe Usuario
 				user.setProdutos(produto);
 				
 				response = "Produto Adicionado!";
 				
 				break;
 			case 2:
-				response = "Ainda em reforma!";
+				
+				if(user.getProdutos().size() == 0) {
+					response = "Nenhum produto cadastrado!\n Cadastre algum produto!";
+				}else {
+					
+//					for(int i = 0; i < user.getProdutos().size(); i++) {
+//						result += user.getProdutos().toString();
+//					}
+					result = user.getProdutos().toString();
+				}
+				response = result;
+				
 				break;
 			case 3:
-				response = "Ainda em reforma!";
+				
+				if(user.getProdutos().size() == 0) {
+					response = "Nenhum produto cadastrado!\n Cadastre algum produto!";
+				}else {
+					System.out.println(user.getProdutos().toString());
+				}
+				System.out.println("Digite o produto que deseja excluir:");
+				
+				do {
+					option = Integer.parseInt(userIn.readLine());
+					if(option < 1 && option > user.getProdutos().size()) {
+						System.out.println("Produto não listado, escolha alguma opção que esteja na lista!");
+					}
+				} while (option < 1 && option > user.getProdutos().size());
+				
+				option -= 1;
+				response = user.deleteProdut(option);
+				
 				break;
 			case 4:
-				response = "Ainda em reforma!";
+				/** 
+				 * Lógica do Chat
+				 */
+				//Criando a parte de conversa entre cliente e servidor passando o socket como referencia
+//				Conversation conversation = new Conversation(soc);
+				
+				//Iniciando a thread que vai comandar a conversa
+//				conversation.start();
+				
+				response = "Iniciando Chat";
+				break;
+			case 0:
+				response = "Servidor Fechando!";
 				break;
 			default:
-				response = "Ainda em reforma!";
 				break;
 			}
 			
-			if(option == 0) break;
-			
 			out.println(response);
+			
+			if (option == 0) {
+                break;
+            }
 			
 		}
 		

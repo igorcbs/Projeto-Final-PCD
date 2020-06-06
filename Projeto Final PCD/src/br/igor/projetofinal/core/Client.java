@@ -61,7 +61,7 @@ public class Client extends Thread{
 			
 			switch (option) {
 			case 1:
-				//Cadastrando Produto com validações
+				//Cadastrando Produto com validações *colocar validações em uma classe Utils
 				do {
 					nameProdut = JOptionPane.showInputDialog("Insira o nome do produto:");
 					if(nameProdut.isEmpty()) {
@@ -74,13 +74,20 @@ public class Client extends Thread{
 						JOptionPane.showInternalMessageDialog(null, "A quantidade no estoque não pode ser \nmenor ou igual a 0!");
 					}
 				} while (qtdEstoque <= 0);
+
 				
 				out.println(nameProdut + ":" + qtdEstoque + ":" + option);
 				
 				break;
 			case 2:
+				//Listagem: Mando a opção para o Server para identificar a listagem 
+				out.println("" + ":"+ 0 + ":" + option);
+				
 				break;
 			case 3:
+				//Remoção de algum produto desejado
+				out.println("" + ":"+ 0 + ":" + option);
+				
 				break;
 			case 4:
 				break;
@@ -91,16 +98,13 @@ public class Client extends Thread{
 				break;
 			}
 			
-			
 			String response = in.readLine();
 			
 			//Printamos a resposta do server!
 			System.out.println("-------------");
-			System.out.println("Servidor Respondeu: "+ response);
+			System.out.println(response);
 			System.out.println("-------------");
-			System.out.println("");
-			System.out.println("");
-			System.out.println("");
+
 			
 			
 		}while(option != 0);
