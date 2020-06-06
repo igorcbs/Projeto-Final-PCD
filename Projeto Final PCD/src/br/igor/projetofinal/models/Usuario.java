@@ -4,7 +4,11 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.JOptionPane;
-
+/**
+ * Classe Usuário do projeto
+ * @author igor
+ *
+ */
 public class Usuario extends Thread{
 	
 	//Atributos
@@ -57,6 +61,7 @@ public class Usuario extends Thread{
 		return "Item removido com sucesso!";
 	}
 	
+	//Metodo da Thread
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub

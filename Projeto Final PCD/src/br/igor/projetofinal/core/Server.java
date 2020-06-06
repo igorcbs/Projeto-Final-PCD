@@ -8,9 +8,15 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import br.igor.projetofinal.jobs.Conversation;
 import br.igor.projetofinal.models.Produtos;
 import br.igor.projetofinal.models.Usuario;
 
+/**
+ * Classe Server que estabelecerá o Back-end do projeto
+ * @author igor
+ *
+ */
 public class Server {
 	
 	//Atibutos do Servidor para envio ao Client, como referencia
@@ -123,10 +129,10 @@ public class Server {
 				 * Lógica do Chat
 				 */
 				//Criando a parte de conversa entre cliente e servidor passando o socket como referencia
-//				Conversation conversation = new Conversation(soc);
+				Conversation conversation = new Conversation(soc);
 				
 				//Iniciando a thread que vai comandar a conversa
-//				conversation.start();
+				conversation.start();
 				
 				response = "Iniciando Chat";
 				break;

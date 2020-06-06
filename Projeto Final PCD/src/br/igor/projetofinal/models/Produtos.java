@@ -2,7 +2,11 @@ package br.igor.projetofinal.models;
 
 import java.util.UUID;
 
-
+/**
+ * Classe Produtos do projeto
+ * @author igor
+ *
+ */
 public class Produtos extends Thread{
 	
 	//Atributos
@@ -48,12 +52,12 @@ public class Produtos extends Thread{
 		this.idProduto = idProduto;
 	}
 	
-
 	@Override
 	public String toString() {
 		return "Nome:" + this.getNome() + " Quantidade no Estoque:" + this.getQtdEstoque() + " IdProduto:" + this.getIdProduto();
 	}
 
+	//Metodo da Thread
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
