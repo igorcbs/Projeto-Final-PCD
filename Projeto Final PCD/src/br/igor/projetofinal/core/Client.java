@@ -1,20 +1,10 @@
 package br.igor.projetofinal.core;
 
 import java.awt.FlowLayout;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
-
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
+import javax.swing.*;
+import java.io.*;
 
 import br.igor.projetofinal.listener.ChatListener;
 import br.igor.projetofinal.models.Utils;
@@ -26,30 +16,50 @@ import br.igor.projetofinal.models.Utils;
 public class Client{
 
 	//Front-end --- chat
-	//Criando a janela
-	static JFrame chatWindow = new JFrame("Aplicando Chat");
-	
-	//Criando uma area de texto que possa ser populada
+	//Janela do chat
+	static JFrame chatWindow = new JFrame("Chat");
+	//Area de texto que vai ser populada
 	static JTextArea chatArea = new JTextArea(22, 45);
+	//TextField
+	public static JTextField textField = new JTextField(30);
+	//Label
+	static JLabel label = new JLabel("          ");
+	//Botão
+	static JButton button = new JButton("Enviar");
 	
-	//Criando textfiled para inserção de texto
-	public static JTextField textField = new JTextField(45);
-	
-	//Criando uma label
-	static JLabel blankLabel = new JLabel("     ");
-	
-	//Criando botao de envio
-	static JButton sendButton = new JButton("Enviar");
-	
+	//Atributos do Cliente
 	static BufferedReader in;
 	public static PrintWriter out;
+	public static Socket soc;
 	
+	//Construtor vazio para quando for escolhido a opção de Chat ele iniciar
+	Client() {
+		//Coordenador que irá redenrizar e ajustar os elementos na tela
+		chatWindow.setLayout(new FlowLayout());
+		
+		//Adicionando os elementos visuais
+		chatWindow.add(new JScrollPane(chatArea));
+		chatWindow.add(label);
+		chatWindow.add(textField);
+		chatWindow.add(button);
+		chatWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		chatWindow.setSize(475, 500);
+		chatWindow.setVisible(true);
+		textField.setEditable(false);
+		chatArea.setEditable(false);
+		
+		//Ações do Botão e do TextField
+		button.addActionListener(new ChatListener());
+		textField.addActionListener(new ChatListener());
+	}
+	
+	//Main
 	public static void main(String[] args) throws UnknownHostException, IOException {
 		
 		System.out.println("Cliente iniciando!");
 		
 		//Criando socket de comunicação
-		Socket soc =  new Socket("localhost",9010);
+		soc =  new Socket("localhost",9010);
 		
 		//Ler o Buffer do console!!!
 		BufferedReader userInput = new BufferedReader(new InputStreamReader(System.in));
@@ -112,37 +122,18 @@ public class Client{
 				
 				break;
 			case 4:
-				//Criando estrutura para o chat
 				
-				// Para renderizar e ajustar todos os elementos na tela, precisamos de um coordenador, o Flow Layout!
-				chatWindow.setLayout(new FlowLayout());
-				
-				//Adicionando os elementos visuais 
-				chatWindow.add(new JScrollPane(chatArea));
-				chatWindow.add(blankLabel);
-				chatWindow.add(textField);
-				chatWindow.add(sendButton);
-				
-				chatWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				chatWindow.setSize(475, 500);
-				chatWindow.setVisible(true);
-				
-				textField.setEditable(false);
-				chatArea.setEditable(false);
-				
-				//atrelando classe ChatListener como o botão enviar
-				sendButton.addActionListener(new ChatListener());
-				//adicionando em ChatListener para quando clicar em Enter
-				textField.addActionListener(new ChatListener());
-				
+				//Instanciamos o cliente onde aparecerá os elementos visuais
 				Client client = new Client();
 				
 				try {
+//					System.out.println(name);
+					out.println("" + ":1" + ":" + option);
 					client.startChat(name);
 				} catch (Exception e) {
-					// TODO: handle exception
+					e.printStackTrace();
 				}
-				
+
 				break;
 			case 0:
 				out.println(option + ":0:0");
@@ -151,14 +142,16 @@ public class Client{
 				break;
 			}
 			
-			String response = in.readLine();
 			
-			//Printamos a resposta do server!
-			System.out.println("-------------");
-			System.out.println(response);
-			System.out.println("-------------");
+			if(option != 0 || option != 4) {
+				String response = in.readLine();
+				
+				//Printamos a resposta do server!
+				System.out.println("-------------");
+				System.out.println(response);
+				System.out.println("-------------");
+			}
 
-			
 			
 		}while(option != 0);
 
@@ -172,34 +165,38 @@ public class Client{
 		
 	}
 	
+	//Metodo Core do nosso Cliente
 	public void startChat(String userName) throws Exception {
 		
-		String ipAddress = JOptionPane.showInputDialog(chatWindow, "Digite o endereço IP do chat", "Endereço IP", JOptionPane.PLAIN_MESSAGE);
+		Socket socket = new Socket("localhost",9011);
 		
+		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		
+		// Iniciamos o nosso Out (remetente de dados) com o OutputStream do Socket, dando como true o AutoFlush!
+		out = new PrintWriter(socket.getOutputStream(), true);	
+		
+		//Logica de envio e recepção de mensagens
 		while(true) {
-			
-			//Recebendo a mensagem 
+			//Recebendo mensagem do servidor
 			String serverMsg = in.readLine();
 			
 			if(serverMsg.contentEquals("NAMEREQUIRED")) {
+				//Enviando a mensagem pro servidor
 				out.println(userName);
-				chatWindow.setTitle("Aplicação Chat - Logado como: " + userName);
+				chatWindow.setTitle("Aplicacao de Chat - Logado como: " + userName);
 				
-			}else if (serverMsg.contentEquals("NAMEACCEPTED")) {
-				//Se entrou aqui é porque o nome foi aceito e podemos desloquear o textfield para receber input do usuario
+			}else if(serverMsg.contentEquals("NAMEACCEPTED")) {
+				//Entra nesse if se o nome foi aceito
 				System.out.println(serverMsg);
 				textField.setEditable(true);
-			
 			}else {
-				
-				//Aqui mostraremos as mensagens enviadas pelos clientes
+				//aqui mostrará as mensagens para os clientes envolvidos
 				chatArea.append(serverMsg + "\n");
 			}
+				
 			
 		}
-	
-		
-		
 	}
+
 
 }

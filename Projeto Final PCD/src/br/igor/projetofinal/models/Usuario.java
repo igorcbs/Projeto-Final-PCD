@@ -9,7 +9,7 @@ import javax.swing.JOptionPane;
  * @author igor
  *
  */
-public class Usuario extends Thread{
+public class Usuario{
 	
 	//Atributos
 	protected String nome;
@@ -21,6 +21,21 @@ public class Usuario extends Thread{
 	//Construtor
 	public Usuario(String nome){
 		setNome(nome);
+		if(ids.isEmpty()) {
+			id = number.nextInt(1000);
+			ids.add(id);
+			
+		}else {
+			id = number.nextInt(1000);
+			for (Integer integer : ids) {
+				if(integer == id) {
+					id = number.nextInt(1000);
+				}
+			}
+			ids.add(id);
+		}
+		setId(id);
+		JOptionPane.showInternalMessageDialog(null, "Usuário Adicionado!");
 	}
 	
 	
@@ -62,31 +77,31 @@ public class Usuario extends Thread{
 	}
 	
 	//Metodo da Thread
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		super.run();
-		
-		try {
-			if(ids.isEmpty()) {
-				id = number.nextInt(1000);
-				ids.add(id);
-				
-			}else {
-				id = number.nextInt(1000);
-				for (Integer integer : ids) {
-					if(integer == id) {
-						id = number.nextInt(1000);
-					}
-				}
-				ids.add(id);
-			}
-			setId(id);
-			JOptionPane.showInternalMessageDialog(null, "Usuário Adicionado!");
-			Thread.sleep(3000);
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-
-	}
+//	@Override
+//	public void run() {
+//		// TODO Auto-generated method stub
+//		super.run();
+//		
+//		try {
+//			if(ids.isEmpty()) {
+//				id = number.nextInt(1000);
+//				ids.add(id);
+//				
+//			}else {
+//				id = number.nextInt(1000);
+//				for (Integer integer : ids) {
+//					if(integer == id) {
+//						id = number.nextInt(1000);
+//					}
+//				}
+//				ids.add(id);
+//			}
+//			setId(id);
+//			JOptionPane.showInternalMessageDialog(null, "Usuário Adicionado!");
+//			Thread.sleep(3000);
+//		} catch (Exception e) {
+//			// TODO: handle exception
+//		}
+//
+//	}
 }

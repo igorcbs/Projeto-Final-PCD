@@ -19,10 +19,9 @@ import br.igor.projetofinal.models.Usuario;
  */
 public class Server {
 	
-	//Atibutos do Servidor para envio ao Client, como referencia
+	//Atributos de referencia ao Cliente e forma de envio!
 	public static ArrayList<String> userNames = new ArrayList<String>();
-	public static ArrayList<PrintWriter> printWriter = new ArrayList<PrintWriter>();
-	
+	public static ArrayList<PrintWriter> printWriters = new ArrayList<PrintWriter>();
 	
 	public static void main(String[] args) throws IOException {
 		
@@ -31,8 +30,14 @@ public class Server {
 		//Criando nova conexão entre cliente e servidor, sem estabelecer comunicação
 		ServerSocket ss = new ServerSocket(9010);
 		
+		//Criando uma conexão para o chat 
+		ServerSocket server = new ServerSocket(9011);
+		
 		//Permitindo conexão com novos cliente
 		Socket soc = ss.accept();
+		
+		//Permitindo conexão com cliente para o chat
+		
 		
 		System.out.println("Estabelecendo conexão com cliente: " + soc);
 		
@@ -65,8 +70,7 @@ public class Server {
 		name = str[0];
 		
 		user = new Usuario(name);
-		user.start();
-			
+//		user.start(); -----> se der certo excluir
 			
 		while(true) {	
 			
@@ -82,7 +86,7 @@ public class Server {
 			case 1:
 				//Cadastrando Produto adicionado pelo usuário e iniciando a Thread 
 				produto = new Produtos(name,number);
-				produto.start();
+//				produto.start();
 				
 				//adicionando o produto na classe Usuario
 				user.setProdutos(produto);
@@ -106,6 +110,8 @@ public class Server {
 				break;
 			case 3:
 				
+				int item = 0;
+				
 				if(user.getProdutos().size() == 0) {
 					response = "Nenhum produto cadastrado!\n Cadastre algum produto!";
 				}else {
@@ -114,27 +120,30 @@ public class Server {
 				System.out.println("Digite o produto que deseja excluir:");
 				
 				do {
-					option = Integer.parseInt(userIn.readLine());
-					if(option < 1 && option > user.getProdutos().size()) {
+					item = Integer.parseInt(userIn.readLine());
+					if(item < 1 && item > user.getProdutos().size()) {
 						System.out.println("Produto não listado, escolha alguma opção que esteja na lista!");
 					}
-				} while (option < 1 && option > user.getProdutos().size());
+				} while (item < 1 && item > user.getProdutos().size());
 				
-				option -= 1;
-				response = user.deleteProdut(option);
+				item -= 1;
+				String strAux = user.deleteProdut(item);
+				response = strAux;
 				
 				break;
 			case 4:
 				/** 
 				 * Lógica do Chat
 				 */
+				Socket soc2 = server.accept();
+				
 				//Criando a parte de conversa entre cliente e servidor passando o socket como referencia
-				Conversation conversation = new Conversation(soc);
+				Conversation conversation = new Conversation(soc2);
 				
-				//Iniciando a thread que vai comandar a conversa
+				//Inicio da Thread
+//				response = "Iniciando Chat";
 				conversation.start();
-				
-				response = "Iniciando Chat";
+
 				break;
 			case 0:
 				response = "Servidor Fechando!";
@@ -143,9 +152,11 @@ public class Server {
 				break;
 			}
 			
-			out.println(response);
-			
-			if (option == 0) {
+			if(option != 4) {
+				out.println(response);
+			}
+
+			if (option == 0 ) {
                 break;
             }
 			
@@ -156,6 +167,7 @@ public class Server {
 		soc.close();
 		in.close();
 		out.close();
+		server.close();
 	}
 
 }

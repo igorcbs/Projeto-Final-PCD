@@ -59,14 +59,14 @@ public class Conversation extends Thread{
 		//Instanciando inputStream e outputstream
 		
 		try {
-			
+			System.out.println("Thread");
 			//Iniciando o In
 			setIn(new BufferedReader(new InputStreamReader(getSocket().getInputStream())));
 			
 			//Iniciando o Out
 			setOut(new PrintWriter(getSocket().getOutputStream(),true));
 			
-			//Mensagem do Servidor para o CLiente solicitando um nome
+			//Mensagem do Servidor para o Cliente solicitando um nome
 			getOut().println("NAMEREQUIRED");
 			
 			//Atribuindo o nome vindo do Cliente
@@ -85,7 +85,7 @@ public class Conversation extends Thread{
 				//Dizemos ao cliente que o nome foi aceito
 				getOut().println("NAMEACCEPTED");
 				// Adicionamos o PrintWriter (nosso OutputStream) ao Servidor para ele receber todos os dados
-				Server.printWriter.add(getOut());
+				Server.printWriters.add(getOut());
 			}
 			
 			//Enviando mensagens para todos os clientes
@@ -101,7 +101,7 @@ public class Conversation extends Thread{
 				}
 				
 				//Não sendo nula, envia a mensagem para todos os clientes
-				for(PrintWriter writer: Server.printWriter) {
+				for(PrintWriter writer: Server.printWriters) {
 					//Formantando a mensagem para ser entregue ao cliente
 					writer.println(getUserName() + ":" + clientMessage);
 				}

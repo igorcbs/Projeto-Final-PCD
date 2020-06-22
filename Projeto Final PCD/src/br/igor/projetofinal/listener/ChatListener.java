@@ -12,7 +12,7 @@ import br.igor.projetofinal.core.Client;
  */
 public class ChatListener implements ActionListener{
 
-	//Metodo que serjá acionado toda vez que for clicado "Enviar
+	//Metodo que será acionado toda vez que for clicado "Enviar
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
