@@ -6,11 +6,10 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 
-import br.igor.projetofinal.jobs.Conversation;
 import br.igor.projetofinal.models.Produtos;
 import br.igor.projetofinal.models.Usuario;
+import br.igor.projetofinal.models.Utils;
 
 /**
  * Classe Server que estabelecerá o Back-end do projeto
@@ -19,19 +18,12 @@ import br.igor.projetofinal.models.Usuario;
  */
 public class Server {
 	
-	//Atributos de referencia ao Cliente e forma de envio!
-	public static ArrayList<String> userNames = new ArrayList<String>();
-	public static ArrayList<PrintWriter> printWriters = new ArrayList<PrintWriter>();
-	
 	public static void main(String[] args) throws IOException {
 		
 		System.out.println("Aguardando conexão com o cliente...");
 		
 		//Criando nova conexão entre cliente e servidor, sem estabelecer comunicação
 		ServerSocket ss = new ServerSocket(9010);
-		
-		//Criando uma conexão para o chat 
-		ServerSocket server = new ServerSocket(9011);
 		
 		//Permitindo conexão com novos cliente
 		Socket soc = ss.accept();
@@ -95,17 +87,13 @@ public class Server {
 				
 				break;
 			case 2:
-				
+				//
 				if(user.getProdutos().size() == 0) {
-					response = "Nenhum produto cadastrado!\n Cadastre algum produto!";
+					Utils.mostrar("Nenhum produto cadastrado!\n Cadastre algum produto!");
 				}else {
-					
-//					for(int i = 0; i < user.getProdutos().size(); i++) {
-//						result += user.getProdutos().toString();
-//					}
-					result = user.getProdutos().toString();
+					Utils.mostrar(user.getProdutos().toString());
 				}
-				response = result;
+				response = "Voltando para o menu";
 				
 				break;
 			case 3:
@@ -131,33 +119,17 @@ public class Server {
 				response = strAux;
 				
 				break;
-			case 4:
-				/** 
-				 * Lógica do Chat
-				 */
-				Socket soc2 = server.accept();
-				
-				//Criando a parte de conversa entre cliente e servidor passando o socket como referencia
-				Conversation conversation = new Conversation(soc2);
-				
-				//Inicio da Thread
-//				response = "Iniciando Chat";
-				conversation.start();
-
-				break;
 			case 0:
 				response = "Servidor Fechando!";
 				break;
 			default:
 				break;
 			}
-			
-			if(option != 4) {
-				out.println(response);
-			}
 
-			if (option == 0 ) {
+			if (option == 0 || option == 4) {
                 break;
+            }else {
+            	out.println(response);
             }
 			
 		}
@@ -167,7 +139,6 @@ public class Server {
 		soc.close();
 		in.close();
 		out.close();
-		server.close();
 	}
 
 }

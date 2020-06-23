@@ -90,17 +90,19 @@ public class Client{
 		//Menu para Adicão de Produtos, Remoção de Produto, 
 		do {
 			
-			do {
-				System.out.println(" -------- Bem vindo! --------");
-				System.out.println("1 - Cadastrar Produto");
-				System.out.println("2 - Listar Produtos");
-				System.out.println("3 - Remover Produto");
-				System.out.println("4 -  Chat com Fornecedor");
-				System.out.println("0 - Sair!");
-				System.out.println("Escolha uma das opções acima:");
-				option = Integer.parseInt(userInput.readLine());
-				
-			} while (option <= -1 || option >= 5);
+//			do {
+//				System.out.println(" -------- Bem vindo! --------");
+//				System.out.println("1 - Cadastrar Produto");
+//				System.out.println("2 - Listar Produtos");
+//				System.out.println("3 - Remover Produto");
+//				System.out.println("4 -  Chat com Fornecedor");
+//				System.out.println("0 - Sair!");
+//				System.out.println("Escolha uma das opções acima:");
+//				option = Integer.parseInt(userInput.readLine());
+//				
+//			} while (option <= -1 || option >= 5);
+			
+			option = Utils.menu();
 			
 			switch (option) {
 			case 1:
@@ -128,7 +130,6 @@ public class Client{
 				
 				try {
 //					System.out.println(name);
-					out.println("" + ":1" + ":" + option);
 					client.startChat(name);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -155,8 +156,6 @@ public class Client{
 			
 		}while(option != 0);
 
-		
-		
 		//Finalizando socket, bufferes e printWriter
 		soc.close();
 		userInput.close();
@@ -175,27 +174,31 @@ public class Client{
 		// Iniciamos o nosso Out (remetente de dados) com o OutputStream do Socket, dando como true o AutoFlush!
 		out = new PrintWriter(socket.getOutputStream(), true);	
 		
-		//Logica de envio e recepção de mensagens
-		while(true) {
-			//Recebendo mensagem do servidor
-			String serverMsg = in.readLine();
-			
-			if(serverMsg.contentEquals("NAMEREQUIRED")) {
-				//Enviando a mensagem pro servidor
-				out.println(userName);
-				chatWindow.setTitle("Aplicacao de Chat - Logado como: " + userName);
+		try {
+			//Logica de envio e recepção de mensagens
+			while(true) {
+				//Recebendo mensagem do servidor
+				String serverMsg = in.readLine();
 				
-			}else if(serverMsg.contentEquals("NAMEACCEPTED")) {
-				//Entra nesse if se o nome foi aceito
-				System.out.println(serverMsg);
-				textField.setEditable(true);
-			}else {
-				//aqui mostrará as mensagens para os clientes envolvidos
-				chatArea.append(serverMsg + "\n");
+				if(serverMsg.contentEquals("NAMEREQUIRED")) {
+					//Enviando a mensagem pro servidor
+					out.println(userName);
+					chatWindow.setTitle("Aplicacao de Chat - Logado como: " + userName);
+					
+				}else if(serverMsg.contentEquals("NAMEACCEPTED")) {
+					//Entra nesse if se o nome foi aceito
+					System.out.println(serverMsg);
+					textField.setEditable(true);
+				}else {
+					//aqui mostrará as mensagens para os clientes envolvidos
+					chatArea.append(serverMsg + "\n");
+				}
+
 			}
-				
-			
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		socket.close();
 	}
 
 

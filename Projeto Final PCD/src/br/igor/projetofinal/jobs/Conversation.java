@@ -5,7 +5,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-import br.igor.projetofinal.core.Server;
+import br.igor.projetofinal.core.ServerChat;
 /**
  * Classe Conversation gerenciará a conversa entre client e servidor do Chat
  * @author igor
@@ -78,14 +78,14 @@ public class Conversation extends Thread{
 			}
 			
 			//Caso o nome seja unico, podemos adiciona-lo ao servidor
-			if(!Server.userNames.contains(getUserName())) {
+			if(!ServerChat.userNames.contains(getUserName())) {
 				
 				//Adicionando o nome 
-				Server.userNames.add(getUserName());
+				ServerChat.userNames.add(getUserName());
 				//Dizemos ao cliente que o nome foi aceito
 				getOut().println("NAMEACCEPTED");
 				// Adicionamos o PrintWriter (nosso OutputStream) ao Servidor para ele receber todos os dados
-				Server.printWriters.add(getOut());
+				ServerChat.printWriters.add(getOut());
 			}
 			
 			//Enviando mensagens para todos os clientes
@@ -101,7 +101,7 @@ public class Conversation extends Thread{
 				}
 				
 				//Não sendo nula, envia a mensagem para todos os clientes
-				for(PrintWriter writer: Server.printWriters) {
+				for(PrintWriter writer: ServerChat.printWriters) {
 					//Formantando a mensagem para ser entregue ao cliente
 					writer.println(getUserName() + ":" + clientMessage);
 				}

@@ -43,4 +43,37 @@ public class Utils {
 		return qtd;
 	}
 	
+	/**
+	 * Função que mostra o menu e valida a opção
+	 * @return numero inteiro validado
+	 */
+	public static int menu() {
+		int option = 0;
+		
+		do {
+			option = Integer.parseInt(JOptionPane.showInputDialog(null, " -------- Bem vindo! --------\n" 
+																	+ "1 - Cadastrar Produto\n" 
+																	+ "2 - Listar Produtos\n" 
+																	+ "3 - Remover Produto\n" 
+																	+ "4 -  Chat com Fornecedor\n"
+																	+ "0 - Sair!\n"
+																	+ "Escolha uma das opções acima:"));
+			
+			if(option <= -1 || option >= 5) {
+				JOptionPane.showMessageDialog(null, "Opção incorreta!\nDigite a opção conforme o número correspondente de opções!");
+			}
+			
+		} while (option <= -1 || option >= 5);
+		
+		return option;
+	}
+	
+	/**
+	 * Função mostra coisas para o usuário
+	 * @return nenhum
+	 */
+	public static void mostrar(String string) {
+		
+		JOptionPane.showMessageDialog(null, string, "Listar", JOptionPane.INFORMATION_MESSAGE);
+	}
 }

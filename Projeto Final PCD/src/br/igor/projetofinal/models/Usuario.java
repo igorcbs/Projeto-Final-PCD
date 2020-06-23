@@ -3,13 +3,12 @@ package br.igor.projetofinal.models;
 import java.util.ArrayList;
 import java.util.Random;
 
-import javax.swing.JOptionPane;
 /**
  * Classe Usuário do projeto
  * @author igor
  *
  */
-public class Usuario{
+public class Usuario extends Thread{
 	
 	//Atributos
 	protected String nome;
@@ -21,21 +20,6 @@ public class Usuario{
 	//Construtor
 	public Usuario(String nome){
 		setNome(nome);
-		if(ids.isEmpty()) {
-			id = number.nextInt(1000);
-			ids.add(id);
-			
-		}else {
-			id = number.nextInt(1000);
-			for (Integer integer : ids) {
-				if(integer == id) {
-					id = number.nextInt(1000);
-				}
-			}
-			ids.add(id);
-		}
-		setId(id);
-		JOptionPane.showInternalMessageDialog(null, "Usuário Adicionado!");
 	}
 	
 	
@@ -76,32 +60,31 @@ public class Usuario{
 		return "Item removido com sucesso!";
 	}
 	
-	//Metodo da Thread
-//	@Override
-//	public void run() {
-//		// TODO Auto-generated method stub
-//		super.run();
-//		
-//		try {
-//			if(ids.isEmpty()) {
-//				id = number.nextInt(1000);
-//				ids.add(id);
-//				
-//			}else {
-//				id = number.nextInt(1000);
-//				for (Integer integer : ids) {
-//					if(integer == id) {
-//						id = number.nextInt(1000);
-//					}
-//				}
-//				ids.add(id);
-//			}
-//			setId(id);
-//			JOptionPane.showInternalMessageDialog(null, "Usuário Adicionado!");
-//			Thread.sleep(3000);
-//		} catch (Exception e) {
-//			// TODO: handle exception
-//		}
-//
-//	}
+//	Metodo da Thread
+	@Override
+	public void run() {
+		super.run();
+		try {
+			if(ids.isEmpty()) {
+				id = number.nextInt(1000);
+				ids.add(id);
+				
+			}else {
+				id = number.nextInt(1000);
+				for (Integer integer : ids) {
+					if(integer == id) {
+						id = number.nextInt(1000);
+					}
+				}
+				ids.add(id);
+			}
+			setId(id);
+			Thread.sleep(3000);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+
+	}
+
 }
