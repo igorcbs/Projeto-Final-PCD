@@ -51,11 +51,11 @@ public class Produtos extends Thread{
 	public void setIdProduto(String idProduto) {
 		this.idProduto = idProduto;
 	}
-	
-	@Override
-	public String toString() {
-		return "Nome:" + this.getNome() + " Quantidade no Estoque:" + this.getQtdEstoque() + " IdProduto:" + this.getIdProduto();
+
+	public String listarProdutos() {
+		return "Nome:" + this.getNome() + " Quantidade no Estoque:" + this.getQtdEstoque() + " IdProduto:" + this.getIdProduto() + "\n";
 	}
+
 	
 	//Metodo da Thread
 	@Override

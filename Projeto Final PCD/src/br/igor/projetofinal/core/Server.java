@@ -28,9 +28,6 @@ public class Server {
 		//Permitindo conexão com novos cliente
 		Socket soc = ss.accept();
 		
-		//Permitindo conexão com cliente para o chat
-		
-		
 		System.out.println("Estabelecendo conexão com cliente: " + soc);
 		
 		//Ler o Buffer do console!!!
@@ -54,7 +51,6 @@ public class Server {
 		String name = "";
 		int number = 0;
 		int option = 0;
-		String result = "";
 		
 		//Cadastrando Usuário e iniciando a Thread
 		String str[] = in.readLine().split(":");
@@ -62,7 +58,7 @@ public class Server {
 		name = str[0];
 		
 		user = new Usuario(name);
-//		user.start(); -----> se der certo excluir
+		user.start();
 			
 		while(true) {	
 			
@@ -78,7 +74,7 @@ public class Server {
 			case 1:
 				//Cadastrando Produto adicionado pelo usuário e iniciando a Thread 
 				produto = new Produtos(name,number);
-//				produto.start();
+				produto.start();
 				
 				//adicionando o produto na classe Usuario
 				user.setProdutos(produto);
@@ -101,18 +97,19 @@ public class Server {
 				int item = 0;
 				
 				if(user.getProdutos().size() == 0) {
-					response = "Nenhum produto cadastrado!\n Cadastre algum produto!";
+					Utils.mostrar("Nenhum produto cadastrado!\n Cadastre algum produto!");
+					response = "Voltando para o menu!";
 				}else {
-					System.out.println(user.getProdutos().toString());
+					item = Utils.validaRemover(user.listarProdutos(), user.getProdutos().size());
 				}
-				System.out.println("Digite o produto que deseja excluir:");
+//				System.out.println("Digite o produto que deseja excluir:");
 				
-				do {
-					item = Integer.parseInt(userIn.readLine());
-					if(item < 1 && item > user.getProdutos().size()) {
-						System.out.println("Produto não listado, escolha alguma opção que esteja na lista!");
-					}
-				} while (item < 1 && item > user.getProdutos().size());
+//				do {
+//					item = Integer.parseInt(userIn.readLine());
+//					if(item < 1 && item > user.getProdutos().size()) {
+//						System.out.println("Produto não listado, escolha alguma opção que esteja na lista!");
+//					}
+//				} while (item < 1 && item > user.getProdutos().size());
 				
 				item -= 1;
 				String strAux = user.deleteProdut(item);

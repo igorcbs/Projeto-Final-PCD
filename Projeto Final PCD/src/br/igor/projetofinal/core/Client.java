@@ -90,18 +90,6 @@ public class Client{
 		//Menu para Adicão de Produtos, Remoção de Produto, 
 		do {
 			
-//			do {
-//				System.out.println(" -------- Bem vindo! --------");
-//				System.out.println("1 - Cadastrar Produto");
-//				System.out.println("2 - Listar Produtos");
-//				System.out.println("3 - Remover Produto");
-//				System.out.println("4 -  Chat com Fornecedor");
-//				System.out.println("0 - Sair!");
-//				System.out.println("Escolha uma das opções acima:");
-//				option = Integer.parseInt(userInput.readLine());
-//				
-//			} while (option <= -1 || option >= 5);
-			
 			option = Utils.menu();
 			
 			switch (option) {
@@ -142,8 +130,7 @@ public class Client{
 			default:
 				break;
 			}
-			
-			
+
 			if(option != 0 || option != 4) {
 				String response = in.readLine();
 				

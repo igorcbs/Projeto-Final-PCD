@@ -59,6 +59,18 @@ public class Usuario extends Thread{
 		}
 		return "Item removido com sucesso!";
 	}
+	/**
+	 * Função de Listar produtos
+	 * @return string com a lista de produtos
+	 */
+	public String listarProdutos() {
+		String str = "";
+		
+		for (Produtos produto : produtos) {
+			str =  produto.listarProdutos();
+		}
+		return str;
+	}
 	
 //	Metodo da Thread
 	@Override
