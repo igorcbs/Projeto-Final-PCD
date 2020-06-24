@@ -8,7 +8,7 @@ import java.util.Random;
  * @author igor
  *
  */
-public class Usuario extends Thread{
+public class Usuario{
 	
 	//Atributos
 	protected String nome;
@@ -20,10 +20,10 @@ public class Usuario extends Thread{
 	//Construtor
 	public Usuario(String nome){
 		setNome(nome);
+		setId(id);
 	}
 	
-	
-	//Metodos
+	//Metodos e Getters e Setters
 	public String getNome() {
 		return nome;
 	}
@@ -37,6 +37,19 @@ public class Usuario extends Thread{
 	}
 
 	public void setId(int id) {
+		if(ids.isEmpty()) {
+			id = number.nextInt(1000);
+			ids.add(id);
+			
+		}else {
+			id = number.nextInt(1000);
+			for (Integer integer : ids) {
+				if(integer == id) {
+					id = number.nextInt(1000);
+				}
+			}
+			ids.add(id);
+		}
 		this.id = id;
 	}
 
@@ -48,7 +61,10 @@ public class Usuario extends Thread{
 		this.produtos.add(produto);
 	}
 	
-	//Essa função irá deletar um produto que foi escolhido pelo usuario
+	/**
+	 * Função de Deletar Produto
+	 * @return string com a lista de produtos
+	 */
 	public String deleteProdut(int escolhido) {
 		
 		try {
@@ -59,6 +75,7 @@ public class Usuario extends Thread{
 		}
 		return "Item removido com sucesso!";
 	}
+	
 	/**
 	 * Função de Listar produtos
 	 * @return string com a lista de produtos
@@ -72,31 +89,4 @@ public class Usuario extends Thread{
 		return str;
 	}
 	
-//	Metodo da Thread
-	@Override
-	public void run() {
-		super.run();
-		try {
-			if(ids.isEmpty()) {
-				id = number.nextInt(1000);
-				ids.add(id);
-				
-			}else {
-				id = number.nextInt(1000);
-				for (Integer integer : ids) {
-					if(integer == id) {
-						id = number.nextInt(1000);
-					}
-				}
-				ids.add(id);
-			}
-			setId(id);
-			Thread.sleep(3000);
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}
-
-	}
-
 }

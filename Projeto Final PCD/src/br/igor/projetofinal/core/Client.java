@@ -117,12 +117,13 @@ public class Client{
 				Client client = new Client();
 				
 				try {
-//					System.out.println(name);
+					//Chamando o metodo startChat para configurar a parte de comunicação do chat
 					client.startChat(name);
+					out.println("Chat" + ":" + 0 + ":" + 4);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-
+				
 				break;
 			case 0:
 				out.println(option + ":0:0");
@@ -151,17 +152,35 @@ public class Client{
 		
 	}
 	
-	//Metodo Core do nosso Cliente
+	/**
+	 * Metodo Core do Cliente
+	 * @parametros nome do usuário
+	 * @return nenhum
+	 */
 	public void startChat(String userName) throws Exception {
 		
 		Socket socket = new Socket("localhost",9011);
 		
+		//Ler o Buffer do socket do chat 
 		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		
 		// Iniciamos o nosso Out (remetente de dados) com o OutputStream do Socket, dando como true o AutoFlush!
 		out = new PrintWriter(socket.getOutputStream(), true);	
 		
 		try {
+			/** Adicionando um Window Listener */
+			chatWindow.addWindowListener(new java.awt.event.WindowAdapter() {
+			    @Override
+			    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+			        try {
+						soc.close();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+			    }
+			});
+			
 			//Logica de envio e recepção de mensagens
 			while(true) {
 				//Recebendo mensagem do servidor
@@ -177,15 +196,17 @@ public class Client{
 					System.out.println(serverMsg);
 					textField.setEditable(true);
 				}else {
-					//aqui mostrará as mensagens para os clientes envolvidos
+					//Aqui mostrará as mensagens para os clientes envolvidos
 					chatArea.append(serverMsg + "\n");
 				}
-
+				
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		socket.close();
+		in.close();
+		out.close();
 	}
 
 

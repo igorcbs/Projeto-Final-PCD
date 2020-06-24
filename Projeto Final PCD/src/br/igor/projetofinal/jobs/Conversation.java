@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 import br.igor.projetofinal.core.ServerChat;
+
 /**
  * Classe Conversation gerenciará a conversa entre client e servidor do Chat
  * @author igor
@@ -23,7 +24,6 @@ public class Conversation extends Thread{
 	public Conversation(Socket socket) {
 		setSocket(socket);
 	}
-
 	
 	//Métodos e Getters e Setters
 	public Socket getSocket() {
@@ -51,7 +51,11 @@ public class Conversation extends Thread{
 		this.userName = userName;
 	}
 	
-	//Metodos da Thread
+	/**
+	 * Método da Thread
+	 * @author igor
+	 *
+	 */
 	@Override
 	public void run() {
 		super.run();
@@ -59,7 +63,6 @@ public class Conversation extends Thread{
 		//Instanciando inputStream e outputstream
 		
 		try {
-			System.out.println("Thread");
 			//Iniciando o In
 			setIn(new BufferedReader(new InputStreamReader(getSocket().getInputStream())));
 			

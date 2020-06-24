@@ -8,15 +8,17 @@ import java.util.ArrayList;
 
 import br.igor.projetofinal.jobs.Conversation;
 
+/**
+ * Classe que gerencia o server do chat
+ * @autor igor
+ */
 public class ServerChat {
 	
 	// Atributos do Servidor, para ter referencia aos Clientes e formas de envio!
 	public static ArrayList<String> userNames = new ArrayList<String>();
 	public static ArrayList<PrintWriter> printWriters = new ArrayList<PrintWriter>();
 
-
 	public static void main(String[] args) throws IOException {
-		// TODO Auto-generated method stub
 		
 		//Criando uma conexão para o chat 
 		ServerSocket server = new ServerSocket(9011);

@@ -76,12 +76,15 @@ public class Utils {
 		
 		JOptionPane.showMessageDialog(null, string, "Listar", JOptionPane.INFORMATION_MESSAGE);
 	}
-	
+	/**
+	 * Função que Remove algum produto
+	 * @return nenhum
+	 */
 	public static int validaRemover(String string, int index) {
 		
 		int option = 0;
 		do {
-			option = Integer.parseInt(JOptionPane.showInputDialog(null, string, "Remover"));
+			option = Integer.parseInt(JOptionPane.showInputDialog(null, string));
 			
 			if(option < 1 && option > index) {
 				JOptionPane.showMessageDialog(null, "Produto não listado, escolha alguma opção que esteja na lista!");

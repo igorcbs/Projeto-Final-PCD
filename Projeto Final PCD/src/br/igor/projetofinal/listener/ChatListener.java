@@ -23,8 +23,4 @@ public class ChatListener implements ActionListener{
 		Client.textField.setText("");
 		
 	}
-	
-	
-	
-	
 }

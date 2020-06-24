@@ -7,7 +7,7 @@ import java.util.UUID;
  * @author igor
  *
  */
-public class Produtos extends Thread{
+public class Produtos{
 	
 	//Atributos
 	protected String nome;
@@ -19,9 +19,10 @@ public class Produtos extends Thread{
 	public Produtos(String nome, int qtd) {
 		setNome(nome);
 		setQtdEstoque(qtd);
+		setIdProduto(UUID.randomUUID().toString().replace("-", ""));
 	}
 
-	//Metodos
+	//Métodos e Getters e Setterss
 	public String getNome() {
 		return nome;
 	}
@@ -51,25 +52,13 @@ public class Produtos extends Thread{
 	public void setIdProduto(String idProduto) {
 		this.idProduto = idProduto;
 	}
-
+	
+	/**
+	 * Função de Listar Produtos
+	 * @return string com a lista de produtos
+	 */
 	public String listarProdutos() {
 		return "Nome:" + this.getNome() + " Quantidade no Estoque:" + this.getQtdEstoque() + " IdProduto:" + this.getIdProduto() + "\n";
-	}
-
-	
-	//Metodo da Thread
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		super.run();
-		
-		try {
-			setIdProduto(UUID.randomUUID().toString().replace("-", ""));
-			Thread.sleep(3000);
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}
 	}
 
 }
